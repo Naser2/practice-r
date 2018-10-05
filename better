@@ -1,0 +1,103 @@
+class Passenger
+ attr_accessor :name, :drivers, :rides
+
+ @rides = []
+ @drivers = []
+ @@all = []
+
+ def initialize(name)
+   @name = name
+   @@all  << self
+   @rides = []
+   @drivers = []
+ end
+
+ def rides
+   Ride.all.select do |ride_inst|
+     ride_inst.passenger == self
+   end
+ end
+
+ def drivers
+   rides.map do |ride|
+     ride.driver
+   end
+
+ end
+
+ def self.all
+   @@all
+ end
+
+ def add_ride(driver, distance)
+   ride = Ride.new(self, driver, distance)
+   @drivers << driver
+   @rides << ride
+ end
+
+ def self.premium_members
+ end
+
+
+# bottom
+end
+
+
+--------------------------------------------------
+class Ride
+ attr_accessor :driver, :passenger, :distance
+
+ @@all = []
+
+ def initialize(passenger, driver, distance)
+    @passenger = passenger
+    @driver = driver
+    @distance = distance
+     @@all << self
+ end
+
+ def self.all
+   @@all
+ end
+
+ # def passenger
+ #
+ # end
+# bottom
+end
+
+
+
+----------------------
+class Driver
+attr_accessor :name
+
+@@all = []
+
+def initialize(name)
+ @name = name
+ @@all << self
+end
+
+def self.all
+@@all
+end
+
+def passenger_names
+array = []
+ Ride.all.each do |trip|
+   if trip.driver == self
+       array  <<  trip.passenger.name
+   end
+ end
+ array.uniq
+end
+
+def rides
+ Ride.all.select do |ride_inst|
+   ride_inst.driver == self
+ end
+end
+
+
+end
